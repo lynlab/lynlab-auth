@@ -7,6 +7,11 @@ type (
 		StatusCode int    `json:"-"`
 		Message    string `json:"message"`
 	}
+
+	TokenGenerateOutput struct {
+		AccessToken  string `json:"access_token"`
+		RefreshToken string `json:"refresh_token"`
+	}
 )
 
 func (e *ErrorOutput) Error() string {

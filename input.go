@@ -16,7 +16,7 @@ type (
 		Password string `json:"password"`
 	}
 
-	tokenGenerateInput struct {
+	TokenGenerateInput struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}

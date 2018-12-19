@@ -19,3 +19,4 @@
   - `DB_USERNAME`
   - `DB_PASSWORD`
   - `DB_NAME`
+  - `LYNLAB_SECRET_KEY`

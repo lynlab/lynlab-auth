@@ -18,7 +18,7 @@ const (
 	  "email": "example@example.com"
 	}
 	`
-	RegisterInputText = `
+	registerInputText = `
 	{
 	  "username": "example_username",
 	  "email": "example@example.com",
@@ -54,13 +54,13 @@ func TestInput(t *testing.T) {
 	}
 
 	var i3 RegisterInput
-	json.Unmarshal([]byte(RegisterInputText), &i3)
+	json.Unmarshal([]byte(registerInputText), &i3)
 	if i3.Username != "example_username" || i3.Email != "example@example.com" || i3.Password != "example_password" {
-		fmt.Println("Failed to unmarshal RegisterInputText")
+		fmt.Println("Failed to unmarshal registerInputText")
 		t.Fail()
 	}
 
-	var i4 tokenGenerateInput
+	var i4 TokenGenerateInput
 	json.Unmarshal([]byte(tokenGenerateInputText), &i4)
 	if i4.Email != "example@example.com" || i4.Password != "example_password" {
 		fmt.Println("Failed to unmarshal tokenGenerateInputText")

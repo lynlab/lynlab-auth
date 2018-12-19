@@ -39,6 +39,20 @@ func main() {
 		return c.JSON(http.StatusCreated, "")
 	})
 
+	e.POST("/apis/v1/token/generate", func(c echo.Context) error {
+		var input TokenGenerateInput
+		err := c.Bind(&input)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, ErrorOutput{http.StatusBadRequest, "Invalid format"})
+		}
+
+		o, e := HandleTokenGenerate(&input)
+		if e != nil {
+			return c.JSON(e.StatusCode, e)
+		}
+		return c.JSON(http.StatusOK, o)
+	})
+
 	/// HTML static pages.
 	// GET /web/**
 	e.Renderer = &Template{templates: template.Must(template.ParseGlob("public/views/*.html"))}
