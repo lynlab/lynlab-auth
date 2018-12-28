@@ -17,6 +17,14 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
+func getHeader(c echo.Context, key string) string {
+	headers := c.Request().Header[key]
+	if len(headers) != 1 {
+		return ""
+	}
+	return headers[0]
+}
+
 func main() {
 	e := echo.New()
 
@@ -25,6 +33,19 @@ func main() {
 	e.GET("/ping", func(c echo.Context) error { return c.String(http.StatusOK, "pong") })
 
 	// GET,POST /apis/v1/**
+	e.GET("/apis/v1/me", func(c echo.Context) error {
+		userUUID, err := AuthorizeRequest(getHeader(c, "Authorization"))
+		if userUUID == "" || err != nil {
+			return c.JSON(http.StatusBadRequest, ErrorOutput{http.StatusBadRequest, "Authorization error"})
+		}
+
+		o, e := HandleMe(userUUID)
+		if e != nil {
+			return c.JSON(e.StatusCode, e)
+		}
+		return c.JSON(http.StatusOK, o)
+	})
+
 	e.POST("/apis/v1/register", func(c echo.Context) error {
 		var input RegisterInput
 		err := c.Bind(&input)

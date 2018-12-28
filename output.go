@@ -12,6 +12,12 @@ type (
 		AccessToken  string `json:"access_token"`
 		RefreshToken string `json:"refresh_token"`
 	}
+
+	MeOutput struct {
+		UUID     string `json:"uuid"`
+		Email    string `json:"email"`
+		Username string `json:"username"`
+	}
 )
 
 func (e *ErrorOutput) Error() string {

@@ -5,10 +5,35 @@ import (
 	"crypto/rand"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/satori/go.uuid"
 	"golang.org/x/crypto/argon2"
 )
+
+func AuthorizeRequest(accessToken string) (string, error) {
+	if accessToken == "" {
+		return "", nil
+	}
+	splits := strings.Split(accessToken, " ")
+
+	var token Token
+	DB.Where(&Token{AccessToken: splits[len(splits)-1]}).First(&token)
+	if token.ID == 0 {
+		return "", fmt.Errorf("Invalid access token")
+	}
+
+	return token.Validate()
+}
+
+func HandleMe(userUUID string) (*MeOutput, *ErrorOutput) {
+	var user User
+	DB.Where(&User{UUID: userUUID}).First(&user)
+	if user.UUID == "" {
+		return nil, nil
+	}
+	return &MeOutput{UUID: user.UUID, Username: user.Username, Email: user.Email}, nil
+}
 
 func HandleRegister(input *RegisterInput) *ErrorOutput {
 	// Check if the duplicated user information exists.
@@ -31,6 +56,7 @@ func HandleRegister(input *RegisterInput) *ErrorOutput {
 		Email:        input.Email,
 		PasswordHash: argon2.IDKey([]byte(input.Password), salt, 1, 8*1024, 4, 32),
 		PasswordSalt: salt,
+		IsActivated:  true, // FIXME - Mail confirmation required.
 	}
 
 	errs := DB.Save(&user).GetErrors()
