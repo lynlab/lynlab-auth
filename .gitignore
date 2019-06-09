@@ -34,3 +34,6 @@
 # End of https://www.gitignore.io/api/go,visualstudiocode
 
 .envrc
+.vscode
+.code
+.idea
