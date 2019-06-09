@@ -1,0 +1,21 @@
+{{ define "error" }}
+<!DOCTYPE html>
+<head>
+  <title>Sign In | LYnLab Auth</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,600&amp;subset=korean">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">
+  <link rel="stylesheet" href="/statics/common.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <h1><span class="oi oi-warning"></span> Error</h1>
+      <p>{{ .message }}</p>
+    </div>
+  </div>
+  <script src="https://apis.google.com/js/platform.js?onload=renderGoogleButton" async defer></script>
+</body>
+{{ end }}

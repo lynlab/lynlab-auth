@@ -1,0 +1,29 @@
+{{ define "signin" }}
+<!DOCTYPE html>
+<head>
+  <title>Sign In | LYnLab Auth</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="google-signin-scope" context="profile email">
+  <meta name="google-signin-client_id" content="129736193789-b33jkiu1cf2edth6h18ok2vpht1lnrsf.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,600&amp;subset=korean">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">
+  <link rel="stylesheet" href="/statics/common.css">
+  <link rel="stylesheet" href="/statics/signin.css">
+  <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src="/statics/signin.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="bordered container">
+      <h1 class="icon"><span class="oi oi-lock-locked"></span></h1>
+      <h3>Sign In to {{ .app.Name }}</h3>
+      <h4 id="form-subtitle">using LYnLab Account</h4>
+
+      <div id="signin-google"></div>
+    </div>
+  </div>
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderGoogleButton" async defer></script>
+</body>
+{{ end }}
