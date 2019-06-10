@@ -34,7 +34,10 @@ func main() {
 
 	e.GET("/ping", func(c echo.Context) error { return c.String(http.StatusOK, "pong") })
 
-	e.POST("/apis/signin", signin)
+	e.POST("/apis/v1/signin", signin)
+	e.POST("/apis/v1/register", register)
+	e.POST("/apis/v1/authorize", authorize)
+
 	e.GET("/web/signin", func(c echo.Context) error {
 		errMsg := "Invalid access. Please contact to system manager if this problem persists."
 		appID := c.QueryParam("appId")

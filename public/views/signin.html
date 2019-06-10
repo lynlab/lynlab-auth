@@ -22,6 +22,29 @@
 
       <div id="signin-google"></div>
     </div>
+
+    <div id="register-modal" class="modal">
+      <div class="overlay"></div>
+      <div class="content">
+        <h2>Register new account</h2>
+        <p>Your account has not been registered. To continue, please register an account.</p>
+
+        <input type="text" id="input-username" placeholder="Username (1-20 characters)"/>
+
+        <button id="register-button">Register</button>
+        <p>or <span id="close-register-modal" class="clickable">sign in with another account</span>.</p>
+      </div>
+    </div>
+
+    <div id="authorization-modal" class="modal">
+      <div class="overlay"></div>
+      <div class="content">
+        <h2>Authorize application</h2>
+        <p><strong>{{ .app.Name }}</strong> would like permission to access your account.</p>
+        <button id="authorize-button">Authorize</button>
+        <p>or <span id="close-authorization-modal" class="clickable">sign in with another account</span>.</p>
+      </div>
+    </div>
   </div>
 
   <script src="https://apis.google.com/js/platform.js?onload=renderGoogleButton" async defer></script>
