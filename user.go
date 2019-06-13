@@ -56,6 +56,16 @@ type UserToken struct {
 	UpdatedAt            time.Time
 }
 
+func (t *UserToken) Expired() bool {
+	return t.AccessTokenExpireAt.Before(time.Now())
+}
+
+func (t *UserToken) GetIdentity() *UserIdentity {
+	var i UserIdentity
+	db.Where(&UserIdentity{ID: t.IdentityID}).First(&i)
+	return &i
+}
+
 type UserAllowedApplication struct {
 	ID            int64 `gorm:"primary_key"`
 	ApplicationID int64 `gorm:"index"`

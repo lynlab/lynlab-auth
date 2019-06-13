@@ -141,3 +141,18 @@ func authorize(c echo.Context) error {
 		return errorAPI(c, http.StatusBadRequest, "no_such_provider")
 	}
 }
+
+type getMeOutput struct {
+	UUID     string `json:"uuid"`
+	Email    string `json:"email"`
+	Username string `json:"username"`
+}
+
+func getMe(c echo.Context) error {
+	ctx := c.(AuthedContext)
+	return c.JSON(http.StatusOK, getMeOutput{
+		UUID:     ctx.identity.UUID,
+		Email:    ctx.identity.Email,
+		Username: ctx.identity.Username,
+	})
+}

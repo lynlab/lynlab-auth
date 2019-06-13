@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"net/http"
+	"strings"
 	"text/template"
 
 	"github.com/labstack/echo"
@@ -28,6 +29,28 @@ func errorAPI(c echo.Context, status int, message string) error {
 	return c.JSON(status, map[string]string{"message": message})
 }
 
+type AuthedContext struct {
+	identity *UserIdentity
+	echo.Context
+}
+
+func authed(h echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		bearerTokens := strings.Split(c.Request().Header.Get("Authorization"), " ")
+		if len(bearerTokens) != 2 || bearerTokens[0] != "Bearer" {
+			return errorAPI(c, http.StatusUnauthorized, "unauthorized")
+		}
+
+		var token UserToken
+		db.Where(&UserToken{AccessToken: bearerTokens[1]}).First(&token)
+		if token.ID == 0 || token.Expired() {
+			return errorAPI(c, http.StatusUnauthorized, "unauthorized")
+		}
+
+		return h(AuthedContext{token.GetIdentity(), c})
+	}
+}
+
 func main() {
 	e := echo.New()
 	e.Renderer = &Template{templates: template.Must(template.ParseGlob("public/views/*.html"))}
@@ -37,6 +60,8 @@ func main() {
 	e.POST("/apis/v1/signin", signin)
 	e.POST("/apis/v1/register", register)
 	e.POST("/apis/v1/authorize", authorize)
+
+	e.GET("/apis/v1/me", authed(getMe))
 
 	e.GET("/web/signin", func(c echo.Context) error {
 		errMsg := "Invalid access. Please contact to system manager if this problem persists."
